@@ -9,7 +9,7 @@ export const registerUser = async (req, res) => {
 
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(401).send('User already exists');
+      return res.status(400).send('User already exists');
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
@@ -35,12 +35,12 @@ export const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).send('Wrong Login or Password');
+      return res.status(400).send('Wrong Login or Password');
     }
 
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!matchPassword) {
-      return res.status(401).send('Wrong Login or Password');
+      return res.status(400).send('Wrong Login or Password');
     }
 
     const token = generateToken({ id: user._id }, '1h');
@@ -68,7 +68,7 @@ export const allUsers = async (req, res) => {
       })
       .select('email name pic');
 
-    return res.send(users);
+    return res.status(200).send(users);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);

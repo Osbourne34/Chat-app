@@ -7,7 +7,7 @@ export const registerValidation = [
     .isLength({ min: 3 }),
   body(
     'password',
-    'Password must contain at least 8 Characters, one capital letter and one number',
+    'Password must contain at least 8 characters, one upper and lower case letter and one number'
   ).isStrongPassword({
     minLength: 8,
     minSymbols: 0,
@@ -18,7 +18,7 @@ export const loginValidation = [
   body('email', 'Invalid Email').isEmail(),
   body(
     'password',
-    'Password must contain at least 8 Characters, one capital letter and one number',
+    'Password must contain at least 8 characters, one upper and lower case letter and one number'
   ).isStrongPassword({
     minLength: 8,
     minSymbols: 0,

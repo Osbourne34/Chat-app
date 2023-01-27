@@ -2,14 +2,15 @@ import { Schema, model } from 'mongoose';
 
 const userModel = Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
     email: {
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
+    },
+    name: {
+      type: String,
+      required: true,
     },
     password: {
       type: String,
@@ -21,7 +22,7 @@ const userModel = Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 export const User = model('User', userModel);
