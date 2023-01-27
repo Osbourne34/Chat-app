@@ -74,3 +74,18 @@ export const allUsers = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('email name');
+
+    if (!user) {
+      return res.status(404).json('User is not found');
+    }
+
+    res.status(200).send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+};

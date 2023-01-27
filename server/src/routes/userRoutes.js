@@ -6,6 +6,7 @@ import {
   registerUser,
   loginUser,
   allUsers,
+  getMe,
 } from '../controllers/userController.js';
 
 export const userRouter = Router();
@@ -13,3 +14,4 @@ export const userRouter = Router();
 userRouter.post('/register', registerValidation, validationCheck, registerUser);
 userRouter.post('/login', loginValidation, validationCheck, loginUser);
 userRouter.get('/', authCheck, allUsers);
+userRouter.get('/getMe', authCheck, getMe);

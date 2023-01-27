@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import { withPublicRoute } from '../../hoc';
 import { Input, Button } from '../../components/ui';
 
 import { RegisterFormFields } from '../../Types';
@@ -22,14 +23,14 @@ const schema = yup.object({
     .required('Required field')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
-      'Password must contain at least 8 Characters, one Upper and Lower case letter and one Number'
+      'Password must contain at least 8 Characters, one Upper and Lower case letter and one Number',
     ),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref('password')], 'Passwords does not match'),
 });
 
-export const Register: FC = () => {
+const RegisterPage: FC = () => {
   const context = useContext(AuthContext);
   const { handleSubmit, register, formState } = useForm<RegisterFormFields>({
     resolver: yupResolver(schema),
@@ -97,3 +98,5 @@ export const Register: FC = () => {
     </div>
   );
 };
+
+export const Register = withPublicRoute(RegisterPage);

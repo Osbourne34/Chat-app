@@ -1,6 +1,6 @@
 import { $api } from '../config';
-import { AuthResponse } from '../Types';
 import { AxiosResponse } from 'axios';
+import { AuthResponse, User } from '../Types';
 
 export const register = (body: {
   email: string;
@@ -15,4 +15,8 @@ export const login = (body: {
   password: string;
 }): Promise<AxiosResponse<AuthResponse>> => {
   return $api.post<AuthResponse>('/user/login', body);
+};
+
+export const getMe = (): Promise<AxiosResponse<User>> => {
+  return $api.get<User>('/user/getMe');
 };

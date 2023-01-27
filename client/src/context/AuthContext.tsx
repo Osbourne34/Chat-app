@@ -1,16 +1,19 @@
-import { AxiosError } from 'axios';
 import {
   createContext,
   Dispatch,
   ReactElement,
   ReactNode,
   SetStateAction,
+  useEffect,
   useState,
 } from 'react';
-import { login, register } from '../service';
+import { AxiosError } from 'axios';
+
+import { login, register, getMe } from '../service';
 import { User } from '../Types';
 
 type AuthContextType = {
+  firstLoading: Boolean;
   user: User | null;
 
   registerError: string;
@@ -24,6 +27,7 @@ type AuthContextType = {
     password: string;
   }) => void;
   loginUser: (body: { email: string; password: string }) => void;
+  logoutUser: () => void;
 };
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -33,9 +37,28 @@ export const AuthProvider = ({
 }: {
   children: ReactNode;
 }): ReactElement => {
+  const [firstLoading, setFirstLoading] = useState<boolean>(true);
   const [user, setUser] = useState<User | null>(null);
   const [registerError, setRegisterError] = useState<string>('');
   const [loginError, setLoginError] = useState<string>('');
+
+  useEffect(() => {
+    if (localStorage.getItem('token')) {
+      const me = async () => {
+        try {
+          const response = await getMe();
+          setUser(response.data);
+        } catch (error) {
+          localStorage.removeItem('token');
+        } finally {
+          setFirstLoading(false);
+        }
+      };
+      me();
+    } else {
+      setFirstLoading(false);
+    }
+  }, []);
 
   const registerUser = async (body: {
     email: string;
@@ -73,9 +96,15 @@ export const AuthProvider = ({
     }
   };
 
+  const logoutUser = () => {
+    localStorage.removeItem('token');
+    setUser(null);
+  };
+
   return (
     <AuthContext.Provider
       value={{
+        firstLoading,
         user,
         registerError,
         setRegisterError,
@@ -83,6 +112,7 @@ export const AuthProvider = ({
         setLoginError,
         registerUser,
         loginUser,
+        logoutUser,
       }}
     >
       {children}

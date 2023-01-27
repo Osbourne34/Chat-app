@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import { withPublicRoute } from '../../hoc';
 import { Input, Button } from '../../components/ui';
 
 import { LoginFormFields } from '../../Types';
@@ -17,11 +18,11 @@ const schema = yup.object({
     .required('Required field')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/,
-      'Password must contain at least 8 Characters, one Upper and Lower case letter and one Number'
+      'Password must contain at least 8 Characters, one Upper and Lower case letter and one Number',
     ),
 });
 
-export const Login: FC = () => {
+const LoginPage: FC = () => {
   const context = useContext(AuthContext);
   const { handleSubmit, register, formState } = useForm<LoginFormFields>({
     resolver: yupResolver(schema),
@@ -74,3 +75,5 @@ export const Login: FC = () => {
     </div>
   );
 };
+
+export const Login = withPublicRoute(LoginPage);
