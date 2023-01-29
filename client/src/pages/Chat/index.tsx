@@ -1,8 +1,15 @@
 import { FC } from 'react';
+
 import { withProtectedRoute } from '../../hoc';
 
+import { Header } from '../../components';
+
 const ChatPage: FC = () => {
-  return <h1>Chat Page</h1>;
+  return (
+    <div>
+      <Header />
+    </div>
+  );
 };
 
 export const Chat = withProtectedRoute(ChatPage);
