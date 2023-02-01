@@ -38,11 +38,7 @@ export const AuthProvider = ({
   children: ReactNode;
 }): ReactElement => {
   const [firstLoading, setFirstLoading] = useState<boolean>(true);
-  const [user, setUser] = useState<User | null>({
-    email: 'we',
-    _id: 'sd',
-    name: 'sd',
-  });
+  const [user, setUser] = useState<User | null>(null);
   const [registerError, setRegisterError] = useState<string>('');
   const [loginError, setLoginError] = useState<string>('');
 

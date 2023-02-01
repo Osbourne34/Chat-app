@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, FC, ReactNode } from 'react';
+import React, { DetailedHTMLProps, FC, ReactNode } from 'react';
 import { useMenuContext } from '../context';
 
 interface MenuItemProps
@@ -16,15 +16,19 @@ export const MenuItem: FC<MenuItemProps> = ({
 }) => {
   const { setOpen } = useMenuContext();
 
-  const handleClick = () => {
+  const handleClose = (e: React.MouseEvent<HTMLLIElement>) => {
     if (onClick) {
-      onClick();
+      onClick(e);
     }
     setOpen(false);
   };
 
   return (
-    <li onClick={handleClick} {...props}>
+    <li
+      className="px-4 py-2 cursor-pointer hover:bg-gray-100 active:bg-gray-200 transition"
+      onClick={handleClose}
+      {...props}
+    >
       {children}
     </li>
   );

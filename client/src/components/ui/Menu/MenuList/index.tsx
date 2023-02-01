@@ -1,15 +1,25 @@
-import { FC, ReactNode } from 'react';
+import { DetailedHTMLProps, FC, ReactNode } from 'react';
 import { useMenuContext } from '../context';
+import cn from 'classnames';
 
-interface MenuListProps {
+interface MenuListProps
+  extends DetailedHTMLProps<
+    React.HTMLAttributes<HTMLUListElement>,
+    HTMLUListElement
+  > {
   children: ReactNode;
 }
 
-export const MenuList: FC<MenuListProps> = ({ children }) => {
+export const MenuList: FC<MenuListProps> = ({ children, className }) => {
   const { open } = useMenuContext();
 
   return open ? (
-    <ul className="absolute top-full right-0 w-max p-4 bg-white shadow-md rounded-md">
+    <ul
+      className={cn(
+        'absolute top-[calc(100%+5px)] right-0 w-max py-2 bg-white shadow-md rounded-md',
+        className,
+      )}
+    >
       {children}
     </ul>
   ) : null;

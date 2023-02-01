@@ -21,7 +21,7 @@ export const registerUser = async (req, res) => {
       pic,
     });
 
-    const token = generateToken({ id: user._id }, '1h');
+    const token = generateToken({ id: user._id }, '1d');
     res.status(200).send({ user: userDto(user._doc), token });
   } catch (error) {
     console.log(error);
@@ -43,7 +43,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).send('Wrong Login or Password');
     }
 
-    const token = generateToken({ id: user._id }, '1h');
+    const token = generateToken({ id: user._id }, '1d');
     res.status(200).send({ user: userDto(user._doc), token });
   } catch (error) {
     console.log(error);
