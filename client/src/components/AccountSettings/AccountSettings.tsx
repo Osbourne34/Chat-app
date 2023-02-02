@@ -1,17 +1,20 @@
-import { FC, useContext } from 'react';
-import { AuthContext } from '../../context';
-import { Button, Menu } from '../ui';
+import { FC } from 'react';
+import { useAuthContext } from '../../context';
+import { Avatar } from '../../components';
+import { Menu } from '../ui';
 
 export const AccountSettings: FC = () => {
-  const context = useContext(AuthContext);
+  const { logoutUser } = useAuthContext();
 
   const handleLogout = () => {
-    context?.logoutUser();
+    logoutUser();
   };
 
   return (
     <Menu>
-      <Menu.MenuButton>Я КНОПКА</Menu.MenuButton>
+      <Menu.MenuButton>
+        <Avatar />
+      </Menu.MenuButton>
       <Menu.MenuList className="w-24">
         <Menu.MenuItem>Profile</Menu.MenuItem>
         <Menu.MenuItem onClick={handleLogout}>Logout</Menu.MenuItem>

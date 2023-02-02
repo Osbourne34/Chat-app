@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { Chat } from './Chat';
-import { Register } from './Register';
-import { Login } from './Login';
+import { Chat } from './Chat/Chat';
+import { Register } from './Register/Register';
+import { Login } from './Login/Login';
 
 export const Routing: FC = () => {
   return (

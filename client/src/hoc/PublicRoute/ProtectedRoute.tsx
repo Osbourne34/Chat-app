@@ -1,11 +1,11 @@
 import { ComponentType, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../../context';
+import { useAuthContext } from '../../context';
 
 export const withPublicRoute = <T extends {}>(Component: ComponentType<T>) => {
   return (props: T) => {
-    const context = useContext(AuthContext);
+    const { user } = useAuthContext();
 
-    return context?.user ? <Navigate to="/" /> : <Component {...props} />;
+    return user ? <Navigate to="/" /> : <Component {...props} />;
   };
 };

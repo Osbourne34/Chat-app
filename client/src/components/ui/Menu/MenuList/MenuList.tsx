@@ -17,7 +17,7 @@ export const MenuList: FC<MenuListProps> = ({ children, className }) => {
     <ul
       className={cn(
         'absolute top-[calc(100%+5px)] right-0 w-max py-2 bg-white shadow-md rounded-md',
-        className,
+        className
       )}
     >
       {children}

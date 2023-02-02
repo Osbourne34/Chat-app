@@ -1,9 +1,9 @@
 import { FC, ReactNode, useRef, useState } from 'react';
 import { useOutsideClick } from '../../../hooks';
 import { MenuContext } from './context';
-import { MenuButton } from './MenuButton';
-import { MenuItem } from './MenuItem';
-import { MenuList } from './MenuList';
+import { MenuButton } from './MenuButton/MenuButton';
+import { MenuItem } from './MenuItem/MenuItem';
+import { MenuList } from './MenuList/MenuList';
 
 interface MenuProps {
   children: ReactNode;

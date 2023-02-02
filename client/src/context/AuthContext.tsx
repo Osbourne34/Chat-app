@@ -4,6 +4,7 @@ import {
   ReactElement,
   ReactNode,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -30,7 +31,7 @@ type AuthContextType = {
   logoutUser: () => void;
 };
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({
   children,
@@ -118,4 +119,14 @@ export const AuthProvider = ({
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error('No context');
+  }
+
+  return context;
 };

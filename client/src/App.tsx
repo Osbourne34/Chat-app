@@ -1,14 +1,14 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { Loader } from './components';
-import { AuthContext } from './context';
+import { useAuthContext } from './context';
 
 import { Routing } from './pages';
 
 export const App: FC = () => {
-  const context = useContext(AuthContext);
+  const { firstLoading } = useAuthContext();
   let content;
 
-  if (context?.firstLoading) {
+  if (firstLoading) {
     content = (
       <div className="h-screen flex items-center justify-center">
         <Loader />
