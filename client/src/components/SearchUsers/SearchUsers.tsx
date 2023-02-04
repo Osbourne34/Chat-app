@@ -1,15 +1,20 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { $api } from '../../config';
-import { useDebounce } from '../../hooks';
+import { useDebounce, useOutsideClick } from '../../hooks';
 
 import { Input } from '../ui';
 
-import { User } from '../../Types';
+import { User as UserType } from '../../Types';
+import { User } from '../User/User';
+import { Loader } from '../Loader/Loader';
 
 export const SearchUsers: FC = () => {
+  const ref = useRef<HTMLDivElement | null>(null);
+
   const [searchValue, setSearchValue] = useState<string>('');
-  const [users, setUsers] = useState<User[]>([]);
-  const [focused, setFocused] = useState<boolean>(false);
+  const [users, setUsers] = useState<UserType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
 
   const debounce = useDebounce(searchValue);
 
@@ -17,18 +22,32 @@ export const SearchUsers: FC = () => {
     setSearchValue(e.target.value);
   };
 
-  const handleFocus = () => {
-    setFocused(true);
+  const handleOpen = () => {
+    setOpen(true);
   };
 
-  const handleBlur = () => {
-    setFocused(false);
+  const handleClose = () => {
+    setOpen(false);
   };
+
+  const handleFocus = () => {
+    if (debounce) {
+      handleOpen();
+    }
+  };
+
+  useOutsideClick(ref, handleClose);
 
   useEffect(() => {
     const searchUsers = async () => {
-      const response = await $api.get(`/user?search=${debounce}`);
-      setUsers(response.data);
+      setLoading(true);
+      handleOpen();
+      try {
+        const response = await $api.get(`/user?search=${debounce}`);
+        setUsers(response.data);
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (debounce) {
@@ -37,24 +56,32 @@ export const SearchUsers: FC = () => {
   }, [debounce]);
 
   return (
-    <div className="relative w-[300px]">
+    <div ref={ref} className="relative w-[300px]">
       <Input
-        onBlur={handleBlur}
         onFocus={handleFocus}
         value={searchValue}
         onChange={handleChange}
         placeholder="Search Users..."
       />
-      {focused && debounce && (
-        <div className="absolute top-[calc(100%+5px)] left-0 w-full p-5 shadow-md rounded-md bg-white">
-          {users.length > 0 ? (
-            users.map(({ _id, name }) => (
-              <div key={_id} className="border p-4">
-                {name}
-              </div>
+
+      {open && debounce && (
+        <div className="absolute top-[calc(100%+5px)] left-0 w-full shadow-md rounded-md bg-white">
+          {loading ? (
+            <Loader />
+          ) : users.length > 0 ? (
+            users.map(({ _id, name, email, pic }) => (
+              <User
+                email={email}
+                name={name}
+                key={_id}
+                userId={_id}
+                onClose={handleClose}
+              />
             ))
           ) : (
-            <div>Nothing found</div>
+            <div onClick={handleClose} className="p-4">
+              No found
+            </div>
           )}
         </div>
       )}
