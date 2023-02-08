@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, Loader } from '../ui';
+import { Button } from '../ui';
 import { ChatsList } from './ChatsList/ChatsList';
 
 export const Chats: FC = () => {

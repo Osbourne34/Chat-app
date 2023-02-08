@@ -1,6 +1,8 @@
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -9,9 +11,18 @@ import {
 import { getUserChat, startChatting } from '../service/chatService';
 import { AxiosError } from 'axios';
 
-import { Chat } from '../Types/Chat';
+import { Chat } from '../Types';
 
-const ChatContext = createContext<any | null>(null);
+type ChatContextType = {
+  chats: Chat[];
+  loadingChats: boolean;
+  errorChats: string;
+  currentChat: string;
+  setCurrentChat: Dispatch<SetStateAction<string>>;
+  createChat: (userId: string) => void;
+};
+
+const ChatContext = createContext<ChatContextType | null>(null);
 
 export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const [chats, setChats] = useState<Chat[]>([]);

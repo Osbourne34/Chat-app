@@ -43,7 +43,7 @@ export const getChats = async (req, res) => {
       },
     })
       .populate('users', '-password')
-      .populate('latestMessage')
+      .populate('latestMessage', 'content updatedAt')
       .populate('groupAdmin');
 
     res.status(200).send(chats);
