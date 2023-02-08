@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { useAuthContext } from '../../context';
-import { Avatar } from '../../components';
-import { Menu } from '../ui';
+import { Avatar, Menu } from '../ui';
 
 export const AccountSettings: FC = () => {
   const { logoutUser } = useAuthContext();

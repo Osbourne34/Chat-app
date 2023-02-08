@@ -1,18 +1,17 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { $api } from '../../config';
 import { useDebounce, useOutsideClick } from '../../hooks';
+import { getUsers } from '../../service';
 
-import { Input } from '../ui';
+import { User } from './User/User';
+import { Input, Loader } from '../ui';
 
 import { User as UserType } from '../../Types';
-import { User } from '../User/User';
-import { Loader } from '../Loader/Loader';
 
 export const SearchUsers: FC = () => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const [searchValue, setSearchValue] = useState<string>('');
-  const [users, setUsers] = useState<UserType[]>([]);
+  const [foundUsers, setFoundUsers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
@@ -22,18 +21,12 @@ export const SearchUsers: FC = () => {
     setSearchValue(e.target.value);
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const handleOpen = () => setOpen(true);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   const handleFocus = () => {
-    if (debounce) {
-      handleOpen();
-    }
+    if (debounce) handleOpen();
   };
 
   useOutsideClick(ref, handleClose);
@@ -43,8 +36,8 @@ export const SearchUsers: FC = () => {
       setLoading(true);
       handleOpen();
       try {
-        const response = await $api.get(`/user?search=${debounce}`);
-        setUsers(response.data);
+        const response = await getUsers(debounce);
+        setFoundUsers(response.data);
       } finally {
         setLoading(false);
       }
@@ -56,7 +49,7 @@ export const SearchUsers: FC = () => {
   }, [debounce]);
 
   return (
-    <div ref={ref} className="relative w-[300px]">
+    <div ref={ref} className="relative w-[350px]">
       <Input
         onFocus={handleFocus}
         value={searchValue}
@@ -66,23 +59,23 @@ export const SearchUsers: FC = () => {
 
       {open && debounce && (
         <div className="absolute top-[calc(100%+5px)] left-0 w-full shadow-md rounded-md bg-white">
-          {loading ? (
-            <Loader />
-          ) : users.length > 0 ? (
-            users.map(({ _id, name, email, pic }) => (
-              <User
-                email={email}
-                name={name}
-                key={_id}
-                userId={_id}
-                onClose={handleClose}
-              />
-            ))
-          ) : (
-            <div onClick={handleClose} className="p-4">
-              No found
-            </div>
-          )}
+          <div onClick={handleClose} className="p-4">
+            {loading ? (
+              <Loader />
+            ) : foundUsers.length > 0 ? (
+              foundUsers.map(({ _id, name, email, pic }) => (
+                <User
+                  key={_id}
+                  email={email}
+                  name={name}
+                  userId={_id}
+                  onClose={handleClose}
+                />
+              ))
+            ) : (
+              <span>No found</span>
+            )}
+          </div>
         </div>
       )}
     </div>

@@ -1,14 +1,15 @@
-import { FC, useContext, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
+import { useAuthContext } from '../../context';
+
 import { withPublicRoute } from '../../hoc';
 import { Input, Button } from '../../components/ui';
 
 import { RegisterFormFields } from '../../Types';
-import { useAuthContext } from '../../context';
 
 const schema = yup.object({
   email: yup.string().required('Required field').email('Invalid Email'),

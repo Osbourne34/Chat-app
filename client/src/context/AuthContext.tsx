@@ -8,9 +8,10 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { AxiosError } from 'axios';
 
 import { login, register, getMe } from '../service';
+import { AxiosError } from 'axios';
+
 import { User } from '../Types';
 
 type AuthContextType = {

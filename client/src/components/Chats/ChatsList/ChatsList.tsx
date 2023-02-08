@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useChatContext } from '../../../context';
-import { Loader } from '../../Loader/Loader';
+import { Loader } from '../../ui';
 import { ChatItem } from '../ChatItem/ChatItem';
 
 export const ChatsList: FC = () => {
@@ -14,7 +14,7 @@ export const ChatsList: FC = () => {
   if (errorChats) {
     content = <div>{errorChats}</div>;
   }
-  if (chats.length > 0) {
+  if (!loadingChats && !errorChats) {
     content = chats.map((c: any) => (
       <ChatItem
         name={c?.chatName || c.users[1].name}

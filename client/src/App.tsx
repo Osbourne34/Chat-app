@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { Loader } from './components';
 import { useAuthContext } from './context';
 
 import { Routing } from './pages';
+import { Loader } from './components/ui';
 
 export const App: FC = () => {
   const { firstLoading } = useAuthContext();
@@ -11,7 +11,7 @@ export const App: FC = () => {
   if (firstLoading) {
     content = (
       <div className="h-screen flex items-center justify-center">
-        <Loader />
+        <Loader size={100} />
       </div>
     );
   } else {

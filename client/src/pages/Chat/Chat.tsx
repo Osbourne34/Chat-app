@@ -1,7 +1,8 @@
 import { FC } from 'react';
 
-import { withProtectedRoute } from '../../hoc';
 import { ChatProvider } from '../../context';
+
+import { withProtectedRoute } from '../../hoc';
 import { Header, Chats } from '../../components';
 
 const ChatPage: FC = () => {

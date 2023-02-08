@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useChatContext } from '../../../context';
-import { Avatar } from '../../Avatar/Avatar';
+import { Avatar } from '../../ui';
 import cn from 'classnames';
 
 export const ChatItem: FC<any> = ({ name, chatId }) => {

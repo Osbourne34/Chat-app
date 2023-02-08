@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import {
   createContext,
   ReactNode,
@@ -6,7 +5,10 @@ import {
   useEffect,
   useState,
 } from 'react';
+
 import { getUserChat, startChatting } from '../service/chatService';
+import { AxiosError } from 'axios';
+
 import { Chat } from '../Types/Chat';
 
 const ChatContext = createContext<any | null>(null);
