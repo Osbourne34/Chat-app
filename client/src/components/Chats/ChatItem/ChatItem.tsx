@@ -3,11 +3,11 @@ import { useChatContext } from '../../../context';
 import { Avatar } from '../../ui';
 import cn from 'classnames';
 
-import { Message } from '../../../Types';
+import { Chat, Message } from '../../../Types';
 
 interface ChatItemProps {
   name: string;
-  chatId: string;
+  chatId: Chat;
   latestMessage?: Message;
 }
 
@@ -27,7 +27,7 @@ export const ChatItem: FC<ChatItemProps> = ({
       onClick={handleClick}
       className={cn(
         'flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 transition cursor-pointer',
-        { ['bg-gray-200 hover:bg-gray-200']: chatId === currentChat },
+        { ['bg-gray-200 hover:bg-gray-200']: chatId === currentChat }
       )}
     >
       <Avatar />

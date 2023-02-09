@@ -7,12 +7,20 @@ interface InputProps
   > {
   helperText?: string;
   error?: boolean;
+  widthFull?: boolean;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ type = 'text', helperText, error, className, ...props }, ref) => {
+  (
+    { type = 'text', helperText, error, className, widthFull, ...props },
+    ref
+  ) => {
     return (
-      <div>
+      <div
+        className={cn({
+          ['w-full']: widthFull,
+        })}
+      >
         <input
           ref={ref}
           type={type}

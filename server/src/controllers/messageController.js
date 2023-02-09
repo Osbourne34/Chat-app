@@ -15,7 +15,6 @@ export const createMessage = async (req, res) => {
       content,
     });
 
-    newMessage = await newMessage.populate('sender', '-password');
     newMessage = await newMessage.populate('chat');
 
     await Chat.findByIdAndUpdate(chatId, {

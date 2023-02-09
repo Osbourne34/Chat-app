@@ -20,12 +20,12 @@ export const ChatsList: FC = () => {
   } else {
     content = (
       <>
-        {chats.map(({ _id, chatName, users, latestMessage }) => (
+        {chats.map((chat) => (
           <ChatItem
-            key={_id}
-            name={chatName || users[1].name}
-            chatId={_id}
-            latestMessage={latestMessage}
+            key={chat._id}
+            name={chat.chatName || chat.users[1].name}
+            chatId={chat}
+            latestMessage={chat.latestMessage}
           />
         ))}
       </>

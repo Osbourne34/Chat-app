@@ -33,7 +33,7 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    let user = await User.findOne({ email });
     if (!user) {
       return res.status(400).send('Wrong Login or Password');
     }
@@ -66,7 +66,7 @@ export const allUsers = async (req, res) => {
       .find({
         _id: { $ne: req.userId },
       })
-      .select('email name pic');
+      .select('-password');
 
     return res.status(200).send(users);
   } catch (error) {
@@ -77,7 +77,7 @@ export const allUsers = async (req, res) => {
 
 export const getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select('email name');
+    const user = await User.findById(req.userId).select('-password');
 
     if (!user) {
       return res.status(404).json('User is not found');
