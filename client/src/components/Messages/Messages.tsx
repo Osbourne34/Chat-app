@@ -1,4 +1,7 @@
 import { FC, useEffect, useLayoutEffect, useRef, useState } from 'react';
+
+import { io } from 'socket.io-client';
+
 import { useAuthContext, useChatContext } from '../../context';
 import { getMessages, createMessage } from '../../service';
 
@@ -14,14 +17,25 @@ export const Messages: FC = () => {
   const { user } = useAuthContext();
 
   const ref = useRef<HTMLDivElement | null>(null);
+  const socket = useRef<any>(null);
 
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
   useLayoutEffect(() => {
-    console.log(ref.current?.scrollHeight);
-  });
+    ref.current?.scrollTo(
+      0,
+      ref.current?.scrollHeight - ref.current?.clientHeight,
+    );
+  }, [messages]);
+
+  useEffect(() => {
+    socket.current = io('http://localhost:5000');
+    socket.current.on('new message', (message: MessageType) => {
+      setMessages((prevState) => [...prevState, message]);
+    });
+  }, []);
 
   useEffect(() => {
     const getChatMessages = async () => {
@@ -40,6 +54,7 @@ export const Messages: FC = () => {
     };
 
     if (currentChat) {
+      socket.current.emit('join room', currentChat._id);
       getChatMessages();
     }
   }, [currentChat]);
@@ -51,6 +66,8 @@ export const Messages: FC = () => {
         content: message,
       });
       setMessages([...messages, response.data]);
+
+      socket.current.emit('send message', response.data);
     }
   };
 
@@ -87,11 +104,9 @@ export const Messages: FC = () => {
     <>
       {currentChat ? (
         <div className="h-full pb-4 flex flex-col justify-end">
-          {!(loading || error) && (
-            <div className="p-4 border-b text-center text-xl font-medium">
-              {currentChat?.users[1].name}
-            </div>
-          )}
+          <div className="p-4 border-b text-center text-xl font-medium">
+            {currentChat.users.find((u) => u._id !== user?._id)?.name}
+          </div>
           <div
             ref={ref}
             className="flex flex-col flex-grow space-y-1 overflow-y-auto pb-4 px-4"

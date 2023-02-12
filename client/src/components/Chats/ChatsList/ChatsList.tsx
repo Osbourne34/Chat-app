@@ -23,9 +23,7 @@ export const ChatsList: FC = () => {
         {chats.map((chat) => (
           <ChatItem
             key={chat._id}
-            name={chat.chatName || chat.users[1].name}
-            chatId={chat}
-            latestMessage={chat.latestMessage}
+            chat={chat}
           />
         ))}
       </>
